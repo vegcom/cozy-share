@@ -1,3 +1,6 @@
+include:
+  - docker-compose.env.yml
+
 services:
   samba:
     #
@@ -13,6 +16,8 @@ services:
 
     dns:
       - 10.0.0.1
+      - 1.1.1.1
+      - 1.0.0.1
 
     dns_search:
       - local
@@ -33,17 +38,17 @@ services:
       - "5353:5353/udp"
 
     volumes:
-      - ${GIT_DIRECTORY:-./data/Git}:/storage/Git
       - ${DOWNLOAD_DIRECTORY:-./data/Downloads}:/storage/Downloads
+      - ${GAME_DIRECTORY:-./data/Game}:/storage/Game
+      - ${GIT_DIRECTORY:-./data/Git}:/storage/Git
+      - ${MEDIA_DIRECTORY:-./data/Media}:/storage/Media
       - ${MISC_DIRECTORY:-./data/Misc}:/storage/Misc
-      - ./app/smb.conf:/etc/samba/smb.conf
-      # NIT: Useful in debug but really not helpful in deployment
-      # - ./app/users.conf:/etc/samba/users.conf
+      - ${PUBLIC_DIRECTORY:-./data/Public}:/storage/Public
+      - ./app/samba/smb.conf:/etc/samba/smb.conf
 
-    environment:
-      NAME: "${SHARE_NAME:-data}"
-      USER: "${SHARE_USER:-user}"
-      PASS: "${SHARE_PASS:-pass}"
+    cap_add:
+      - NET_ADMIN
+      - NET_BROADCAST
 
 networks:
   frontend:

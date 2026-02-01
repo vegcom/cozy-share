@@ -1,0 +1,9 @@
+<service-group>
+  <name replace-wildcards="yes">Git on %h</name>
+  <service>
+    <type>_smb._tcp</type>
+    <port>445</port>
+    <txt-record>path=/Git</txt-record>
+    <txt-record>sd=Git path</txt-record>
+  </service>
+</service-group>

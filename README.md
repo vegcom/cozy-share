@@ -21,30 +21,37 @@
 ### Compose
 
 ```shell
+cp .env.example .env
 cp docker-compose.env.yml.example docker-compose.env.yml
-
-vim docker-compose.env.yml # edit plz
-
+vim .env docker-compose.env.yml # edit plz
 docker compose -f docker-compose.yml -f docker-compose.env.yml up -d
 ```
 
-### Manual
+### Manualy Adding Users
 
 ```shell
 docker exec -it samba --adduser demo --pass Sup3rP4ssw0rd123
 ```
 
-## Adding users
-
-docker exec -it samba --adduser user --pass S3cr3tP4ssw04d
-
-### generate a mid passphrase?
-
 ```shell
 openssl rand -hex 36
 ```
 
-## Networking
+## Troubleshooting & problem solving
+
+### Permissions
+
+```shell
+# Check ACL
+getfacl ${SHARED_DIRECTORY}
+```
+
+```shell
+# Set ACL
+setfacl -m g:cozyusers:rwx ${SHARED_DIRECTORY}
+```
+
+### Networking
 
 If you have to add a network the long way, here you go
 

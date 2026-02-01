@@ -1,14 +1,12 @@
 #!/bin/sh
+set -e
 
 users_conf="/etc/samba/users.conf"
-
-# Start UID/GID counters
 uid_base=1000
 gid_base=1000
 
-# If any SMB_USER_* variables exist, generate users.conf
-env | grep '^SMB_USER_' >/dev/null 2>&1
-if [ $? -eq 0 ]; then
+# Auto-generate users.conf if SMB_USER_* variables are present
+if env | grep -q '^SMB_USER_'; then
     echo "# Auto-generated users" > "$users_conf"
 
     i=0
@@ -28,4 +26,11 @@ if [ $? -eq 0 ]; then
     done
 fi
 
-exec /usr/bin/samba.sh
+echo "[entrypoint] Starting wsdd..."
+wsdd --shortlog &
+
+echo "[entrypoint] Starting avahi-daemon..."
+avahi-daemon --no-drop-root --daemonize --debug &
+
+echo "[entrypoint] Starting Samba..."
+exec /usr/bin/samba.sh "$@"

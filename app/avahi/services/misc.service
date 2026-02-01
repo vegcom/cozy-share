@@ -1,0 +1,9 @@
+<service-group>
+  <name replace-wildcards="yes">Misc on %h</name>
+  <service>
+    <type>_smb._tcp</type>
+    <port>445</port>
+    <txt-record>path=/Misc</txt-record>
+    <txt-record>sd=Misc path</txt-record>
+  </service>
+</service-group>

@@ -1,10 +1,9 @@
 FROM dockurr/samba
 
-# Add envsubst or any tools you want
-RUN apk add --no-cache gettext
-
-# Add your optional auto-user entrypoint
 COPY app/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY app/avahi/services/*.service /etc/avahi/services/
 
-ENTRYPOINT ["/entrypoint.sh"]
+RUN apk add --no-cache wsdd avahi tini && \
+    chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]

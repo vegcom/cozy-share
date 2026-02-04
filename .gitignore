@@ -1,2 +1,3 @@
 .env
+app/samba/users.conf
 docker-compose.env.yml

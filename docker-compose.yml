@@ -27,7 +27,7 @@ services:
 
     networks:
       frontend:
-        ipv4_address: ${IP}
+        ipv4_address: ${IP:-10.0.0.200}
 
     ports:
       - "445:445"
@@ -44,7 +44,10 @@ services:
       - ${MEDIA_DIRECTORY:-./data/Media}:/storage/Media
       - ${MISC_DIRECTORY:-./data/Misc}:/storage/Misc
       - ${PUBLIC_DIRECTORY:-./data/Public}:/storage/Public
+
       - ./app/samba/smb.conf:/etc/samba/smb.conf
+      - ./app/samba/users.conf:/etc/samba/users.conf
+
 
     cap_add:
       - NET_ADMIN

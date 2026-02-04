@@ -41,15 +41,23 @@ openssl rand -hex 36
 
 ### Permissions
 
-```shell
-# Check ACL
-getfacl ${SHARED_DIRECTORY}
-```
+samba requires ( via `samba.sh` ) to be gid 1000 so we just run our users off 2000+
 
 ```shell
-# Set ACL
-setfacl -m g:cozyusers:rwx ${SHARED_DIRECTORY}
+addgroup --gid 1000 smb || groupmod --gid 1000 smb
+chown -R :smb /storage
+chmod -R g+rwX /storage
+find /storage -type d -exec chmod g+s {} \;
+app/samba/users.conf
 ```
+
+given presently we have to set gid manually
+`demo:1000:smb:3003:password:/storage`
+
+```
+vim app/samba/users.conf
+```
+
 
 ### Networking
 
@@ -68,9 +76,6 @@ docker network create -d macvlan \
   --gateway=10.0.0.1 \
   -o parent=eth0 \
   frontend
-
-# 10.0.0.100 is a standin
-ip addr add 10.0.0.100/24 dev eth0
 ```
 
 ## Attribution

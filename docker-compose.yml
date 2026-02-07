@@ -29,13 +29,14 @@ services:
       frontend:
         ipv4_address: ${IP:-10.0.0.200}
 
-    ports:
-      - "445:445"
-      - "139:139"
-      - "137:137/udp"
-      - "138:138/udp"
-      - "3702:3702/udp"
-      - "5353:5353/udp"
+    # Just documentation for the kind hearted
+    expose:
+      - "445"
+      - "139"
+      - "137/udp"
+      - "138/udp"
+      - "3702/udp"
+      - "5353/udp"
 
     volumes:
       - ${DOWNLOAD_DIRECTORY:-./data/Downloads}:/storage/Downloads
@@ -46,7 +47,8 @@ services:
       - ${PUBLIC_DIRECTORY:-./data/Public}:/storage/Public
 
       - ./app/samba/smb.conf:/etc/samba/smb.conf
-      - ./app/samba/users.conf:/etc/samba/users.conf
+      # FIXME: idk it's just ugly but it helps for dbg
+      #- ./app/samba/users.conf:/etc/samba/users.conf
 
 
     cap_add:

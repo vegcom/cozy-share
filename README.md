@@ -13,6 +13,15 @@
            (づ｡◕‿‿◕｡)づ
 ```
 
+>### Warning
+>
+> this uses **group 1000 for smb**
+> [cozy-salt](https://github.com/vegcom/cozy-salt) sets our users as all `>2000` gid/uid
+>
+> **smb** group has to be **1000 on host**, as is in guest
+>
+> [How To](#Permissions)
+
 ## Quick-Start
 
 - You can enroll users either through [compose](#compose) [docker-compose.env.yml](docker-compose.env.yml) or [manually](#manual)
@@ -50,14 +59,6 @@ chmod -R g+rwX /storage
 find /storage -type d -exec chmod g+s {} \;
 app/samba/users.conf
 ```
-
-given presently we have to set gid manually
-`demo:1000:smb:3003:password:/storage`
-
-```
-vim app/samba/users.conf
-```
-
 
 ### Networking
 

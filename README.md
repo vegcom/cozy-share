@@ -20,7 +20,7 @@
 >
 > **smb** group has to be **1000 on host**, as is in guest
 >
-> [How To](#Permissions)
+> [How To](#permissions)
 
 ## Quick-Start
 
@@ -62,14 +62,6 @@ app/samba/users.conf
 
 ### Networking
 
-If you have to add a network the long way, here you go
-
-- Pros
-  - allows broadcast without conflict
-  - none of the downsides of host networking
-- Cons
-  - idk yet
-
 ```bash
 # 10.0.0.0/24 is a standin
 docker network create -d macvlan \
@@ -77,6 +69,19 @@ docker network create -d macvlan \
   --gateway=10.0.0.1 \
   -o parent=eth0 \
   frontend
+```
+
+```bash
+# 10.0.0.254 is an unassigned IP
+ip link delete frontend-shim
+ip link add frontend-shim link eth0 type macvlan mode bridge
+ip addr add 10.0.0.254/24 dev frontend-shim
+ip link set frontend-shim up
+```
+
+```bash
+# 10.0.0.200 is the default salt master IP
+ip route add 10.0.0.200/32 dev frontend-shim
 ```
 
 ## Attribution

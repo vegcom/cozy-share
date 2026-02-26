@@ -23,7 +23,7 @@ services:
       - local
       - localdomain
 
-    mac_address: "${MAC:-'00:00:00:00:00:01'}"
+    mac_address: "${MAC:-02:42:ac:11:00:11}"
 
     networks:
       frontend:
@@ -31,12 +31,12 @@ services:
 
     # Just documentation for the kind hearted
     expose:
-      - "445"
-      - "139"
-      - "137/udp"
-      - "138/udp"
-      - "3702/udp"
-      - "5353/udp"
+      - 445/tcp
+      - 139/tcp
+      - 137/udp
+      - 138/udp
+      - 3702/udp
+      - 5353/udp
 
     volumes:
       - ${DOWNLOAD_DIRECTORY:-./data/Downloads}:/storage/Downloads
@@ -45,11 +45,12 @@ services:
       - ${MEDIA_DIRECTORY:-./data/Media}:/storage/Media
       - ${MISC_DIRECTORY:-./data/Misc}:/storage/Misc
       - ${PUBLIC_DIRECTORY:-./data/Public}:/storage/Public
-
+      # Local discovery
+      - /var/run/dbus:/var/run/dbus
+      # smb service configuration
       - ./app/samba/smb.conf:/etc/samba/smb.conf
-      # FIXME: idk it's just ugly but it helps for dbg
+      # idk it's just ugly but it helps for dbg
       #- ./app/samba/users.conf:/etc/samba/users.conf
-
 
     cap_add:
       - NET_ADMIN

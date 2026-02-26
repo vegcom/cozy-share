@@ -72,7 +72,7 @@ docker network create -d macvlan \
 ```
 
 ```bash
-# 10.0.0.254 is an unassigned IP
+# 10.0.0.254 is an unassigned IP on your network
 ip link delete frontend-shim
 ip link add frontend-shim link eth0 type macvlan mode bridge
 ip addr add 10.0.0.254/24 dev frontend-shim
@@ -80,7 +80,7 @@ ip link set frontend-shim up
 ```
 
 ```bash
-# 10.0.0.200 is the default salt master IP
+# 10.0.0.200 is the default samba IP
 ip route add 10.0.0.200/32 dev frontend-shim
 ```
 
